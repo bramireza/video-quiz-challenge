@@ -5,7 +5,7 @@ const useQuizzes = (quizzes) => {
 
   useEffect(() => {
     const storedQuizzes = JSON.parse(localStorage.getItem("quizzes"));
-    if (storedQuizzes.length > 0) {
+    if (storedQuizzes && storedQuizzes.length > 0) {
       setCurrentQuizzes(storedQuizzes);
     } else {
       setCurrentQuizzes(quizzes);
