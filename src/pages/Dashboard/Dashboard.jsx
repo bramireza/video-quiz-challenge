@@ -18,9 +18,9 @@ const Dashboard = () => {
         Video Quiz
       </Typography>
 
-      <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+      <Grid container spacing={4} sx={{ flexGrow: 1 }}>
         {currentQuizzes.map((quiz) => (
-          <Grid xs={6} sm={6} md={3}>
+          <Grid xs={12} sm={6} md={3}>
             <QuizCard key={quiz.id} quiz={quiz} />
           </Grid>
         ))}
