@@ -5,6 +5,7 @@ import { QuizCard } from "../../components";
 import { quizzes } from "../../mocks";
 import { MainLayout } from "../../layouts";
 import useQuizzes from "../../hooks/useQuizzes";
+import { Grid } from "@mui/joy";
 
 const Dashboard = () => {
   const [currentQuizzes, setQuiz] = useQuizzes(quizzes);
@@ -16,17 +17,14 @@ const Dashboard = () => {
       <Typography component="h1" variant="h3" sx={{ paddingY: 2 }}>
         Video Quiz
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          py: 1,
-        }}
-      >
+
+      <Grid container spacing={2} sx={{ flexGrow: 1 }}>
         {currentQuizzes.map((quiz) => (
-          <QuizCard key={quiz.id} quiz={quiz} />
+          <Grid xs={6} sm={6} md={3}>
+            <QuizCard key={quiz.id} quiz={quiz} />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
       <Box
         sx={{
           display: "flex",
