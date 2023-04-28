@@ -39,6 +39,7 @@ export const useWebRTC = (setURL, setQuiz, setErrorMsg) => {
   const stopRecording = (setIsRecording) => {
     try {
       mediaRecorderRef.current.stop();
+
       setIsRecording(false);
     } catch (error) {
       handleError(error);
