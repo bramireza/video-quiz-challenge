@@ -2,13 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { QuizCard } from "../../components";
-import { quizzes } from "../../mocks";
 import { MainLayout } from "../../layouts";
 import useQuizzes from "../../hooks/useQuizzes";
 import { Grid } from "@mui/joy";
 
 const Dashboard = () => {
-  const [currentQuizzes, setQuiz] = useQuizzes(quizzes);
+  const [currentQuizzes, setQuiz] = useQuizzes();
   const handleClick = () => {
     console.log("Quizzes ", currentQuizzes);
   };

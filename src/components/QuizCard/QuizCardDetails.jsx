@@ -15,7 +15,7 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [showStream, setShowStream] = useState(true);
-  const [url, setURL] = useState(quiz.url);
+  const [url, setURL] = useState(quiz?.url);
 
   const videoRef = useRef(null);
   const videoRecordRef = useRef(null);
@@ -30,7 +30,7 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
     if (quiz.completed) {
       setIsRecorded(true);
       setShowStream(false);
-      console.log("is completed");
+      console.log("is completed", url);
     } else {
       console.log("no completed", url);
       resetRecording(videoRef, setIsRecorded);

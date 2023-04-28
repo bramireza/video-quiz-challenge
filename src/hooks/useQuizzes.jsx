@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-
-const useQuizzes = (quizzes) => {
-  const [currentQuizzes, setCurrentQuizzes] = useState([]);
+import { quizzes as globalQuizzes } from "./../mocks";
+const useQuizzes = () => {
+  const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
-    const storedQuizzes = JSON.parse(localStorage.getItem("quizzes"));
+    const storedQuizzes = localStorage.getItem("quizzes");
     if (storedQuizzes && storedQuizzes.length > 0) {
-      setCurrentQuizzes(storedQuizzes);
+      setQuizzes(JSON.parse(storedQuizzes));
     } else {
-      setCurrentQuizzes(quizzes);
+      setQuizzes(globalQuizzes);
     }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("quizzes", JSON.stringify(quizzes));
   }, [quizzes]);
 
-  useEffect(() => {
-    localStorage.setItem("quizzes", JSON.stringify(currentQuizzes));
-  }, [currentQuizzes]);
-
   const setQuiz = (newQuiz) => {
-    const updatedQuizzes = currentQuizzes.map((quiz) => {
+    const updatedQuizzes = quizzes.map((quiz) => {
       if (quiz.id === newQuiz.id) {
         return newQuiz;
       } else {
         return quiz;
       }
     });
-    setCurrentQuizzes(updatedQuizzes);
+    setQuizzes(updatedQuizzes);
   };
 
-  return [currentQuizzes, setQuiz];
+  return [quizzes, setQuiz];
 };
 
 export default useQuizzes;
