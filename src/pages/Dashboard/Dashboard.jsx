@@ -19,7 +19,7 @@ const Dashboard = () => {
 
       <Grid container spacing={4} sx={{ flexGrow: 1 }}>
         {currentQuizzes.map((quiz) => (
-          <Grid xs={12} sm={6} md={3}>
+          <Grid key={quiz.id} xs={12} sm={6} md={3}>
             <QuizCard key={quiz.id} quiz={quiz} />
           </Grid>
         ))}

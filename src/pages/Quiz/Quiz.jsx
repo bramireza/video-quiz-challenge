@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { QuizCardDetails } from "../../components";
 import { Box, Button, IconButton } from "@mui/material";
-import { quizzes } from "../../mocks";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { MainLayout } from "../../layouts";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -13,9 +13,9 @@ const Quiz = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState({});
-  const [currentQuizzes, editQuiz] = useQuizzes();
+  const [quizzes, editQuiz] = useQuizzes();
   useEffect(() => {
-    console.log(currentQuizzes);
+    console.log(quizzes);
     const currentQuiz = quizzes.find((quiz) => quiz.id == parseInt(id));
     if (currentQuiz) {
       setQuiz(currentQuiz);
@@ -23,6 +23,9 @@ const Quiz = () => {
       navigate("/404/");
     }
   }, [id]);
+  useEffect(() => {
+    editQuiz(quiz);
+  }, [quiz]);
   const handleClickOnHome = () => {
     navigate("/");
   };

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { quizzes as globalQuizzes } from "./../mocks";
 const useQuizzes = () => {
-  const [quizzes, setQuizzes] = useState([]);
+  const [quizzes, setQuizzes] = useState(
+    JSON.parse(localStorage.getItem("quizzes")) || globalQuizzes
+  );
 
   useEffect(() => {
     const storedQuizzes = localStorage.getItem("quizzes");
