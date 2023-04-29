@@ -1,0 +1,13 @@
+.blinking {
+  animation: blinkingAnimation 1s linear infinite;
+}
+
+@keyframes blinkingAnimation {
+  from {
+    opacity: 1;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 0.3;
+  }
+}

@@ -15,7 +15,6 @@ const Quiz = () => {
   const [quiz, setQuiz] = useState({});
   const [quizzes, editQuiz] = useQuizzes();
   useEffect(() => {
-    console.log(quizzes);
     const currentQuiz = quizzes.find((quiz) => quiz.id == parseInt(id));
     if (currentQuiz) {
       setQuiz(currentQuiz);

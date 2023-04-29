@@ -5,23 +5,26 @@ import Card from "@mui/joy/Card";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/joy/IconButton";
+
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+
 import { useWebRTC } from "../../hooks/useWebRTC";
+import { limitTime } from "../../mocks";
 
 const QuizCardDetails = ({ quiz, setQuiz }) => {
   const [isRecorded, setIsRecorded] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [showStream, setShowStream] = useState(true);
-  const [url, setURL] = useState(quiz.url);
+  const [time, setTime] = useState(0);
 
   const videoRef = useRef(null);
   const videoRecordRef = useRef(null);
 
   const { init, startRecording, stopRecording, resetRecording } = useWebRTC(
-    setURL,
     setQuiz,
     setErrorMsg
   );
@@ -29,33 +32,85 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
   useEffect(() => {
     if (quiz.completed) {
       setIsRecorded(true);
-      setShowStream(false);
-      console.log("is completed", url);
-    } else {
-      console.log("no completed", url);
-      resetRecording(videoRef, setIsRecorded);
-    }
-    console.log(quiz);
-  }, [quiz.completed]);
-  const handleRecordingButtonClick = () => {
-    if (isRecording) {
-      stopRecording(setIsRecording);
+      setIsRecording(false);
       setShowStream(false);
     } else {
-      startRecording(setIsRecording);
+      setIsRecorded(false);
       setShowStream(true);
     }
+    init(videoRef);
+    console.log(quiz);
+  }, [quiz.completed]);
+
+  useEffect(() => {
+    let intervalId;
+    if (isRecording) {
+      intervalId = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+    return () => clearInterval(intervalId);
+  }, [isRecording]);
+
+  useEffect(() => {
+    if (time === limitTime) {
+      stopRecording(setIsRecording);
+      setShowStream(false);
+    }
+  }, [time]);
+
+  const handleRecordingButtonClick = () => {
+    isRecording
+      ? (stopRecording(setIsRecording), setShowStream(false))
+      : isRecorded
+      ? (resetRecording(videoRef), setIsRecorded(false), setTime(0))
+      : (startRecording(setIsRecording), setShowStream(true), setTime(0));
   };
+
   return (
     <Card variant="outlined" sx={{ width: 700 }}>
       <CardOverflow>
+        {isRecording ? (
+          <div
+            style={{
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              top: "1rem",
+              right: "1rem",
+              zIndex: 3,
+              padding: "5px 8px",
+              borderRadius: "20px",
+              backgroundColor: "black",
+              color: "red",
+              width: "70px",
+              animation: "blink 1s infinite",
+            }}
+          >
+            <FiberManualRecordIcon className="blinking" />
+
+            <Typography level="body2" sx={{ color: "white" }}>
+              {Math.floor(time / 60)
+                .toString()
+                .padStart(2, "0")}
+              :
+              {Math.floor(time % 60)
+                .toString()
+                .padStart(2, "0")}
+            </Typography>
+          </div>
+        ) : (
+          <></>
+        )}
         <AspectRatio ratio="4/3">
           {errorMsg && <p>{errorMsg}</p>}
 
           <video
             playsInline
             ref={videoRecordRef}
-            src={url}
+            src={quiz.url}
             controls
             hidden={showStream}
             style={{ width: "100%" }}

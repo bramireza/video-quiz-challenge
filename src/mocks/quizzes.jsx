@@ -2,8 +2,8 @@ export const quizzes = [
   {
     id: 1,
     question: "¿Cual fue tu video juego favorito durante tu infancia?",
-    url: "https://www.youtube.com/watch?v=NSXA-prVotU&list=RDNSXA-prVotU&start_radio=1",
-    completed: true,
+    url: "",
+    completed: false,
   },
   {
     id: 2,

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { constraints, mimeType } from "../mocks";
 
-export const useWebRTC = (setURL, setQuiz, setErrorMsg) => {
+export const useWebRTC = (setQuiz, setErrorMsg) => {
   let chunks = [];
   const mediaRecorderRef = useRef(null);
   const handleError = (error) => {
@@ -25,6 +25,7 @@ export const useWebRTC = (setURL, setQuiz, setErrorMsg) => {
   };
   const startRecording = (setIsRecording) => {
     try {
+      setErrorMsg("");
       chunks = [];
       setQuiz((prevQuiz) => ({ ...prevQuiz, completed: false }));
       mediaRecorderRef.current = new MediaRecorder(window.stream, {
@@ -52,17 +53,16 @@ export const useWebRTC = (setURL, setQuiz, setErrorMsg) => {
       mediaRecorderRef.current.onstop = () => {
         const videoBlob = new Blob(chunks, { type: mimeType });
         const url = window.URL.createObjectURL(videoBlob);
-        setURL(url);
+
         setQuiz((prevQuiz) => ({ ...prevQuiz, completed: true, url: url }));
       };
       console.log(mediaRecorderRef.current);
     }
   }, [mediaRecorderRef.current]);
-  const resetRecording = (videoRef, setIsRecorded) => {
+  const resetRecording = (videoRef) => {
     try {
       chunks = [];
-      setIsRecorded(false);
-      setQuiz((prevQuiz) => ({ ...prevQuiz, completed: false }));
+      setQuiz((prevQuiz) => ({ ...prevQuiz, completed: false, url: "" }));
 
       init(videoRef);
     } catch (error) {
