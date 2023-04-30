@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardOverflow from "@mui/joy/CardOverflow";
@@ -9,16 +9,22 @@ import { useNavigate } from "react-router-dom";
 
 const QuizCard = ({ quiz }) => {
   const navigate = useNavigate();
-
+  const [isCompleted, setIsCompleted] = useState(false);
   const handleClick = () => {
     navigate(`/quiz/${quiz.id}`);
   };
-
+  useEffect(() => {
+    setIsCompleted(quiz.completed);
+  }, []);
   return (
     <Card variant="outlined" sx={{ width: 245 }}>
       <CardOverflow>
         <AspectRatio ratio="3/4">
-          <video src={quiz.url} />
+          <video
+            src={quiz.url}
+            controls={isCompleted}
+            style={{ background: "black" }}
+          />
         </AspectRatio>
         <IconButton
           aria-label="Play video quiz"

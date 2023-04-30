@@ -1,16 +1,24 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
+import { Grid } from "@mui/joy";
 import { QuizCard } from "../../components";
 import { MainLayout } from "../../layouts";
 import useQuizzes from "../../hooks/useQuizzes";
-import { Grid } from "@mui/joy";
 
 const Dashboard = () => {
   const [currentQuizzes, setQuiz] = useQuizzes();
+  const [isDisabled, setIsDisabled] = useState(true);
   const handleClick = () => {
     console.log("Quizzes ", currentQuizzes);
   };
+  useEffect(() => {
+    let allCompleted = true;
+    currentQuizzes.forEach((quiz) => {
+      if (quiz.completed === false) allCompleted = false;
+    });
+
+    allCompleted ? setIsDisabled(false) : setIsDisabled(true);
+  }, []);
   return (
     <MainLayout>
       <Typography component="h1" variant="h3" sx={{ paddingY: 2 }}>
@@ -28,12 +36,14 @@ const Dashboard = () => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
+          width: "100%",
         }}
       >
         <Button
           variant="contained"
-          sx={{ marginLeft: "auto" }}
+          sx={{ marginY: 2 }}
           onClick={handleClick}
+          disabled={isDisabled}
         >
           ENVIAR
         </Button>

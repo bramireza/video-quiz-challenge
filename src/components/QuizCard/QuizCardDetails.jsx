@@ -39,7 +39,6 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
       setShowStream(true);
     }
     init(videoRef);
-    console.log(quiz);
   }, [quiz.completed]);
 
   useEffect(() => {
@@ -86,7 +85,6 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
               backgroundColor: "black",
               color: "red",
               width: "70px",
-              animation: "blink 1s infinite",
             }}
           >
             <FiberManualRecordIcon className="blinking" />
@@ -113,7 +111,15 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
             src={quiz.url}
             controls
             hidden={showStream}
-            style={{ width: "100%" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              background: "black",
+            }}
           />
 
           <video
@@ -122,7 +128,15 @@ const QuizCardDetails = ({ quiz, setQuiz }) => {
             ref={videoRef}
             muted
             hidden={!showStream}
-            style={{ width: "100%" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              background: "black",
+            }}
           />
         </AspectRatio>
         <IconButton
