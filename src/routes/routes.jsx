@@ -10,7 +10,7 @@ export const routes = [
     Component: Quiz,
   },
   {
-    path: "404",
+    path: "*",
     Component: PageNotFound,
   },
 ];
